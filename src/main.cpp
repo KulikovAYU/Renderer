@@ -7,6 +7,7 @@
 #include "core/base.hpp"
 
 #include <imgui/imgui.h>
+#include <glm/glm.hpp>
 //#include <imgui/backends/imgui_impl_opengl3.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -38,6 +39,12 @@ int main()
     // glfw window creation
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -45,16 +52,8 @@ int main()
 
     ImGuiIO& io = ImGui::GetIO();
 
-
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
     glfwMakeContextCurrent(window);
-
-
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -92,13 +91,7 @@ int main()
 
     GLuint vaoId = vertexArrayObject.get_render_id();
 
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    // отвязывает текущий массив вершин (VAO). Это может быть полезно в некоторых ситуациях, например,
-    // когда вы завершили настройку массива вершин и хотите убедиться, что вы не изменяете его случайно.
-    // После вызова glBindVertexArray(0) любые дальнейшие операции с массивами вершин не будут влиять
-    // на текущий VAO.
-   glBindVertexArray(0);
+
 
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
