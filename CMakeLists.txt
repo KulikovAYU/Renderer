@@ -1,21 +1,22 @@
 cmake_minimum_required(VERSION 3.27)
-project(untitled2)
+
+project(MyOpenGLExecutable)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# Пути к папкам
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
+set(CORE_DIR ${PROJECT_SOURCE_DIR}/src/core)
 
 message("Creating GLAD library")
 #Установка пути к каталогу, где лежит glad
 set(GLAD_DIR ${THIRDPARTY_DIR}/glad)
-#добавляем glad
-set(GLAD_INCLUDE_DIR ${GLAD_DIR}/include)
 # Создание библиотеки Glad
 add_library(Glad ${GLAD_DIR}/src/glad.c)
-
+set(GLAD_INCLUDE_DIR ${GLAD_DIR}/include)
+target_include_directories(Glad PRIVATE ${GLAD_INCLUDE_DIR})
 
 message("Creating GLFW library")
-
 # Установка пути к каталогу, где лежит GLFW
 add_subdirectory(${THIRDPARTY_DIR}/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 
@@ -27,16 +28,8 @@ message("Building GLM")
 set(GLM_DIR ${THIRDPARTY_DIR}/glm)
 add_subdirectory(${GLM_DIR})
 
-# Указание директив для поиска заголовочных файлов
-include_directories(
-        ${GLFW_INCLUDE_DIR}
-        ${GLAD_INCLUDE_DIR}
-        ${GLM_DIR}
-        ${PROJECT_SOURCE_DIR}/src )
-
 set(HEADERS
         src/core/Sample/core.hpp
-        src/core/base.hpp
         src/core/buffers.hpp
         src/platforms/OpenGl/opengl_buffers.hpp
         src/core/renderer/buffer.hpp
@@ -46,6 +39,7 @@ set(HEADERS
         src/core/renderer/renderer_api.hpp
         src/platforms/OpenGl/opengl_render_api.hpp
         src/core/renderer/shader_data.hpp
+        src/core/renderer/shader.hpp
 )
 
 # Установка переменной для хранения списка исходных файлов вашего проекта
@@ -54,6 +48,7 @@ set(SOURCES
         src/platforms/OpenGl/opengl_buffers_impl.cpp
         src/core/renderer/renderer_api.cpp
         src/platforms/OpenGl/opengl_render_api.cpp
+        src/core/renderer/shader.cpp
 )
 
 # Создание исполняемого файла из исходных файлов
@@ -107,4 +102,18 @@ target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR})
 target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR}/imgui)
 target_link_libraries(ImGui PRIVATE Glad glfw)
 
-target_link_libraries(MyOpenGLExecutable PRIVATE ImGui Glad glfw)
+#включаем неявно base.hpp во все translation units
+target_compile_options(MyOpenGLExecutable PRIVATE -include ${CORE_DIR}/base.hpp)
+
+# Указание директив для поиска заголовочных файлов
+target_include_directories(
+        MyOpenGLExecutable
+        PUBLIC
+        ${GLAD_INCLUDE_DIR}
+        ${GLFW_INCLUDE_DIR}
+        ${GLM_DIR}
+        ${PROJECT_SOURCE_DIR}/src
+        ${CORE_DIR}
+)
+
+target_link_libraries(MyOpenGLExecutable PRIVATE ImGui Glad glfw )
