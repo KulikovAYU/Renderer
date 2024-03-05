@@ -34,26 +34,30 @@ include_directories(
         ${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src )
 
-# Установка переменной для хранения списка исходных файлов вашего проекта
-set(SOURCES src/main.cpp
+set(HEADERS
         src/core/Sample/core.hpp
         src/core/base.hpp
         src/core/buffers.hpp
         src/platforms/OpenGl/opengl_buffers.hpp
         src/core/renderer/buffer.hpp
-        src/platforms/OpenGl/opengl_buffers_impl.cpp
         src/core/renderer/vertex_array.hpp
         src/platforms/OpenGl/opengl_vertex_array.hpp
         src/platforms/OpenGl/opengl_entity_render_object.hpp
-        src/core/renderer/renderer_api.cpp
         src/core/renderer/renderer_api.hpp
-        src/platforms/OpenGl/opengl_render_api.cpp
         src/platforms/OpenGl/opengl_render_api.hpp
         src/core/renderer/shader_data.hpp
 )
 
+# Установка переменной для хранения списка исходных файлов вашего проекта
+set(SOURCES
+        src/main.cpp
+        src/platforms/OpenGl/opengl_buffers_impl.cpp
+        src/core/renderer/renderer_api.cpp
+        src/platforms/OpenGl/opengl_render_api.cpp
+)
+
 # Создание исполняемого файла из исходных файлов
-add_executable(MyOpenGLExecutable ${SOURCES})
+add_executable(MyOpenGLExecutable ${HEADERS} ${SOURCES})
 
 # Линковка с библиотекой Glad+glfw
 #target_link_libraries(MyOpenGLExecutable PRIVATE Glad glfw)
