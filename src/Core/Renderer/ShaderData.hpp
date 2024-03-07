@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include <cstdint>
-
-namespace gl_render_application {
+namespace multi_render_application {
 
     enum class shader_data_type
     {
@@ -39,6 +37,8 @@ namespace gl_render_application {
             case shader_data_type::Int3:     return 4 * 3;
             case shader_data_type::Int4:     return 4 * 4;
             case shader_data_type::Bool:     return 1;
+            case shader_data_type::None:
+                break;
         }
 
         return 0;

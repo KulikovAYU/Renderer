@@ -4,24 +4,8 @@ project(MyOpenGLExecutable)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Пути к папкам
-set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 set(CORE_DIR ${PROJECT_SOURCE_DIR}/src/core)
-
-message("Creating GLAD library")
-#Установка пути к каталогу, где лежит glad
-set(GLAD_DIR ${THIRDPARTY_DIR}/glad)
-# Создание библиотеки Glad
-add_library(Glad ${GLAD_DIR}/src/glad.c)
-set(GLAD_INCLUDE_DIR ${GLAD_DIR}/include)
-target_include_directories(Glad PRIVATE ${GLAD_INCLUDE_DIR})
-
-message("Creating GLFW library")
-# Установка пути к каталогу, где лежит GLFW
-add_subdirectory(${THIRDPARTY_DIR}/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
-
-# Настройка пути к заголовочным файлам и библиотекам GLFW
-set(GLFW_INCLUDE_DIR ${GLFW_DIR}/include)
+set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 
 message("Building GLM")
 #Установка пути к каталогу, где лежит glm
@@ -30,39 +14,32 @@ add_subdirectory(${GLM_DIR})
 
 set(HEADERS
         src/core/Sample/core.hpp
-        src/core/buffers.hpp
-        src/platforms/OpenGl/opengl_buffers.hpp
-        src/core/renderer/buffer.hpp
-        src/core/renderer/vertex_array.hpp
-        src/platforms/OpenGl/opengl_vertex_array.hpp
-        src/platforms/OpenGl/opengl_entity_render_object.hpp
-        src/core/renderer/renderer_api.hpp
-        src/platforms/OpenGl/opengl_render_api.hpp
-        src/core/renderer/shader_data.hpp
-        src/core/renderer/shader.hpp
+        src/core/Buffers.hpp
+        src/core/renderer/Buffer.hpp
+        src/core/renderer/VertexArray.hpp
+        src/core/renderer/Shader.hpp
+        src/core/renderer/ShaderData.hpp
+        src/core/renderer/RendererApi.hpp
 )
 
 # Установка переменной для хранения списка исходных файлов вашего проекта
 set(SOURCES
         src/main.cpp
-        src/platforms/OpenGl/opengl_buffers_impl.cpp
-        src/core/renderer/renderer_api.cpp
-        src/platforms/OpenGl/opengl_render_api.cpp
-        src/core/renderer/shader.cpp
+        src/core/Sample/sample_shader.cpp
+        src/Platform/PlatformProvider/PlatformShader.cpp
+        src/Platform/PlatformProvider/PlatformRendererApi.cpp
 )
+
 
 # Создание исполняемого файла из исходных файлов
 add_executable(MyOpenGLExecutable ${HEADERS} ${SOURCES})
 
-# Линковка с библиотекой Glad+glfw
-#target_link_libraries(MyOpenGLExecutable PRIVATE Glad glfw)
-
 # Поиск и подключение пакета OpenGL
-find_package(OpenGL REQUIRED)
-if(OPENGL_FOUND)
-    include_directories(${OPENGL_INCLUDE_DIRS})
-    target_link_libraries(MyOpenGLExecutable PRIVATE ${OPENGL_LIBRARIES})
-endif()
+#find_package(OpenGL REQUIRED)
+#if(OPENGL_FOUND)
+#    include_directories(${OPENGL_INCLUDE_DIRS})
+#    target_link_libraries(MyOpenGLExecutable PRIVATE ${OPENGL_LIBRARIES})
+#endif()
 
 # Link against Cocoa framework
 if(APPLE)
@@ -103,17 +80,25 @@ target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR}/imgui)
 target_link_libraries(ImGui PRIVATE Glad glfw)
 
 #включаем неявно base.hpp во все translation units
-target_compile_options(MyOpenGLExecutable PRIVATE -include ${CORE_DIR}/base.hpp)
+#target_compile_options(MyOpenGLExecutable PRIVATE -include ${CORE_DIR}/base.hpp)
+
 
 # Указание директив для поиска заголовочных файлов
 target_include_directories(
         MyOpenGLExecutable
         PUBLIC
         ${GLAD_INCLUDE_DIR}
-        ${GLFW_INCLUDE_DIR}
         ${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src
         ${CORE_DIR}
 )
 
-target_link_libraries(MyOpenGLExecutable PRIVATE ImGui Glad glfw )
+add_subdirectory(src/Platform/Opengl)
+
+target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
+target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
+target_include_directories(MyOpenGLExecutable PRIVATE ${GLM_DIR})
+
+target_link_libraries(MyOpenGLExecutable PRIVATE ImGui Glad glfw OpenGlPlatformLibrary)
+#target_compile_options(MyOpenGLExecutable PRIVATE -include ${CORE_DIR}/Basepch.hpp)
+target_precompile_headers(MyOpenGLExecutable PRIVATE ${CMAKE_SOURCE_DIR}/src/Core/Basepch.hpp)

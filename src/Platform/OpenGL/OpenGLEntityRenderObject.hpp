@@ -4,14 +4,16 @@
 
 #pragma once
 
-namespace gl_render_application{
+#include <glad/glad.h>
+
+namespace multi_render_application{
 
     template<typename TEntity>
-    struct opengl_entity_render_object{
+    struct OpenGLEntityRenderObject{
     public:
         [[nodiscard]] TEntity get_render_id() const noexcept { return m_renderId; }
 
-        virtual ~opengl_entity_render_object(){
+        virtual ~OpenGLEntityRenderObject(){
             if (m_renderId != 0) {
                 glDeleteBuffers(1, &m_renderId);
             }
@@ -20,5 +22,7 @@ namespace gl_render_application{
     protected:
         TEntity m_renderId = 0;
     };
+
+    struct OpenglEntityRenderObjectId : public  OpenGLEntityRenderObject<GLuint>{};
 
 }

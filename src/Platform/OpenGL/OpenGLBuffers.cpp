@@ -2,38 +2,37 @@
 // Created by Anton Kulikov on 03.03.2024.
 //
 
-#include "opengl_buffers.hpp"
-#include "opengl_vertex_array.hpp"
+#include "OpenGLBuffers.hpp"
+#include "OpenGLVertexArray.hpp"
 
-namespace gl_render_application{
+namespace multi_render_application{
 
-    open_gl_vertex_buffer::open_gl_vertex_buffer(uint32_t size) {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
         glCreateBuffers(1, &m_renderId);
         glBindBuffer(GL_ARRAY_BUFFER, m_renderId);
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
     }
 
-    open_gl_vertex_buffer::open_gl_vertex_buffer(float *vertices, uint32_t size) {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, uint32_t size) {
         glCreateBuffers(1, &m_renderId);
         glBindBuffer(GL_ARRAY_BUFFER, m_renderId);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
-    void open_gl_vertex_buffer::bind() const {
+    void OpenGLVertexBuffer::Bind() const {
         glBindBuffer(GL_ARRAY_BUFFER, m_renderId);
     }
 
-    void open_gl_vertex_buffer::unbind() const {
+    void OpenGLVertexBuffer::Unbind() const {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void open_gl_vertex_buffer::set_data(const void *data, uint32_t size) {
+    void OpenGLVertexBuffer::SetData(const void *data, uint32_t size) {
         glBindBuffer(GL_ARRAY_BUFFER, m_renderId);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
     }
 
-
-    open_gl_index_buffer::open_gl_index_buffer(uint32_t *indices, uint32_t count) : m_count{count}{
+    OpenglIndexBuffer::OpenglIndexBuffer(uint32_t *indices, uint32_t count) : m_count{count}{
         glCreateBuffers(1, &m_renderId);
 
         // GL_ELEMENT_ARRAY_BUFFER is not valid without an actively bound VAO
@@ -42,52 +41,52 @@ namespace gl_render_application{
         glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
     }
 
-    void open_gl_index_buffer::bind() const {
+    void OpenglIndexBuffer::Bind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderId);
     }
 
-    void open_gl_index_buffer::unbind() const {
+    void OpenglIndexBuffer::Unbind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    uint32_t open_gl_index_buffer::get_count() const {
+    uint32_t OpenglIndexBuffer::GetCount() const {
         return m_count;
     }
 
-    opengl_vertex_array::opengl_vertex_array() {
+    OpenGLVertexArray::OpenGLVertexArray() {
         glCreateVertexArrays(1, &m_renderId);
     }
 
-    void opengl_vertex_array::bind() const{
+    void OpenGLVertexArray::bind() const{
         glBindVertexArray(m_renderId);
     }
 
-    void opengl_vertex_array::unbind() const{
+    void OpenGLVertexArray::Unbind() const{
         glBindVertexArray(0);
     }
 
-    void opengl_vertex_array::add_vertex_buffer(const Ref<vertex_buffer> &vertexBuffer) {
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
         glBindVertexArray(m_renderId);
-        vertexBuffer->bind();
+        vertexBuffer->Bind();
 
         //TODO: parse shaider layout
 
         m_vertex_buffers.push_back(vertexBuffer);
     }
 
-    void opengl_vertex_array::set_index_buffer(const Ref<index_buffer> &indexBuffer) {
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
 
         glBindVertexArray(m_renderId);
-        indexBuffer->bind();
+        indexBuffer->Bind();
 
         m_index_buffer = indexBuffer;
     }
 
-    const std::vector<Ref<vertex_buffer>> &opengl_vertex_array::get_vertex_buffers() const {
+    const std::vector<Ref<VertexBuffer>> &OpenGLVertexArray::GetVertexBuffers() const {
         return m_vertex_buffers;
     }
 
-    const Ref<index_buffer> &opengl_vertex_array::get_index_buffer() const {
+    const Ref<IndexBuffer> &OpenGLVertexArray::GetIndexBuffer() const {
         return m_index_buffer;
     }
 }

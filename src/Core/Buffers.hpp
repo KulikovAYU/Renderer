@@ -3,10 +3,9 @@
 //
 
 #pragma once
-#include <stdint.h>
-#include <cstring>
+#include <cstdint>
 
-namespace gl_render_application {
+namespace multi_render_application {
 // Non-owning raw buffer class
     struct Buffer {
         uint8_t *Data = nullptr;

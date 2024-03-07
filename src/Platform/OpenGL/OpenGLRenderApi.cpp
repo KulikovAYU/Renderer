@@ -2,11 +2,11 @@
 // Created by Anton Kulikov on 03.03.2024.
 //
 
-#include "opengl_render_api.hpp"
+#include "OpenGLRenderApi.hpp"
 #include <iostream>
-#include "glad/glad.h"
+#include <glad/glad.h>
 
-namespace gl_render_application{
+namespace multi_render_application{
 
     void OpenGLMessageCallback(
             unsigned source,
@@ -28,7 +28,7 @@ namespace gl_render_application{
 
 
 
-    void opengl_render_api::init() {
+    void OpenGLRenderApi::Init() {
 #ifdef DEBUG
         glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -44,30 +44,30 @@ namespace gl_render_application{
         glEnable(GL_LINE_SMOOTH);
     }
 
-    void opengl_render_api::set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    void OpenGLRenderApi::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
         glViewport(x, y, width, height);
     }
 
-    void opengl_render_api::set_clear_color(const glm::vec4 &color) {
+    void OpenGLRenderApi::SetClearColor(const glm::vec4 &color) {
         glClearColor(color.r, color.g, color.b, color.a);
     }
 
-    void opengl_render_api::clear() {
+    void OpenGLRenderApi::Clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void opengl_render_api::draw_indexed(const Ref<vertex_array> &vertexArray, uint32_t indexCount) {
+    void OpenGLRenderApi::DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount) {
         vertexArray->bind();
-        uint32_t count = indexCount ? indexCount : vertexArray->get_index_buffer()->get_count();
+        uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
 
-    void opengl_render_api::draw_lines(const Ref<vertex_array> &vertexArray, uint32_t vertexCount) {
+    void OpenGLRenderApi::DrawLines(const Ref<VertexArray> &vertexArray, uint32_t vertexCount) {
         vertexArray->bind();
         glDrawArrays(GL_LINES, 0, vertexCount);
     }
 
-    void opengl_render_api::set_line_width(float width) {
+    void OpenGLRenderApi::SetLineWidth(float width) {
         glLineWidth(width);
     }
 }

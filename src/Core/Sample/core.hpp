@@ -7,11 +7,11 @@
 #include <vector>
 #include <utility>
 #include "glad/glad.h"
-#include "platforms/OpenGl/opengl_debug.hpp"
-#include "platforms/OpenGl/opengl_type_mapping.hpp"
-#include "core/base.hpp"
+#include "platforms/OpenGl/OpenglDebug.hpp"
+#include "platforms/OpenGl/OpenglTypeMapping.hpp"
+#include "core/Base.hpp"
 
-namespace gl_render_application{
+namespace gl_render_application_sample{
 
     class vertex_array_object;
 
@@ -66,7 +66,7 @@ namespace gl_render_application{
     template<class T>
     class vertex_buffer_object final :
             public base_typed_buffer_object<T>,
-            private noncopyable {
+            private multi_render_application::noncopyable {
 
     public:
 
@@ -116,7 +116,7 @@ namespace gl_render_application{
     template<class T>
     class element_buffer_object final :
             public base_typed_buffer_object<T>,
-            private noncopyable{
+            private multi_render_application::noncopyable{
 
     public:
         explicit element_buffer_object(std::vector<T> data) noexcept
@@ -173,10 +173,10 @@ namespace gl_render_application{
 
     class vertex_array_object final :
             public base_buffer_object,
-            private noncopyable{
+private multi_render_application::noncopyable{
 
-        using base_buffer_object_ptr = Scope<vertex_buffer_object<float>>;
-        using base_array_object_ptr = Scope<element_buffer_object<unsigned int>>;
+        using base_buffer_object_ptr = multi_render_application::Scope<vertex_buffer_object<float>>;
+        using base_array_object_ptr = multi_render_application::Scope<element_buffer_object<unsigned int>>;
     public:
         vertex_array_object(
                 base_buffer_object_ptr vbo,

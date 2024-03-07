@@ -5,7 +5,7 @@
 #pragma once
 #include <memory>
 
-namespace gl_render_application {
+namespace multi_render_application {
 
     namespace noncopyable_ { // protection from unintended ADL
         class noncopyable {
@@ -21,17 +21,14 @@ namespace gl_render_application {
     template<typename T>
     using Scope = std::unique_ptr<T>;
     template<typename T, typename ... Args>
-    [[nodiscard]] constexpr Scope<T> CreateScope(Args&& ... args)
-    {
+    [[nodiscard]] constexpr Scope<T> CreateScope(Args&& ... args){
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
     template<typename T>
     using Ref = std::shared_ptr<T>;
     template<typename T, typename ... Args>
-    [[nodiscard]] constexpr Ref<T> CreateRef(Args&& ... args)
-    {
+    [[nodiscard]] constexpr Ref<T> CreateRef(Args&& ... args){
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
-
 }
