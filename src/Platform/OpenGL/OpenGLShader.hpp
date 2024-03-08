@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Renderer/Shader.hpp"
+#include <Renderer/Shader.hpp>
 #include "OpenGLEntityRenderObject.hpp"
 #include <unordered_map>
 #include <vector>
@@ -36,16 +36,16 @@ namespace multi_render_application {
 
         void SetMat4(const std::string &name, const glm::mat4 &value) override{}
 
-        [[nodiscard]] std::string GetName() const override{return m_name;}
+        [[nodiscard]] std::string GetName() const override{return m_name_;}
 
     private:
-        std::string m_file_path;
-        std::string m_name;
+        std::string m_file_path_;
+        std::string m_name_;
 
-        std::unordered_map<GLenum, std::vector<uint32_t>> m_VulkanSPIRV;
-        std::unordered_map<GLenum, std::vector<uint32_t>> m_OpenGLSPIRV;
+        std::unordered_map<GLenum, std::vector<uint32_t>> m_vulkan_spirv_;
+        std::unordered_map<GLenum, std::vector<uint32_t>> m_open_glspirv_;
 
-        std::unordered_map<GLenum, std::string> m_OpenGLSourceCode;
+        std::unordered_map<GLenum, std::string> m_open_gl_source_code_;
 
     };
 }

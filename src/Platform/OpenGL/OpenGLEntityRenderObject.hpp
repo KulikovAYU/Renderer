@@ -11,7 +11,7 @@ namespace multi_render_application{
     template<typename TEntity>
     struct OpenGLEntityRenderObject{
     public:
-        [[nodiscard]] TEntity get_render_id() const noexcept { return m_renderId; }
+        [[nodiscard]] TEntity GetRenderId() const noexcept { return m_renderId; }
 
         virtual ~OpenGLEntityRenderObject(){
             if (m_renderId != 0) {

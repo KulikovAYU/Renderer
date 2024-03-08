@@ -102,3 +102,6 @@ target_include_directories(MyOpenGLExecutable PRIVATE ${GLM_DIR})
 target_link_libraries(MyOpenGLExecutable PRIVATE ImGui Glad glfw OpenGlPlatformLibrary)
 #target_compile_options(MyOpenGLExecutable PRIVATE -include ${CORE_DIR}/Basepch.hpp)
 target_precompile_headers(MyOpenGLExecutable PRIVATE ${CMAKE_SOURCE_DIR}/src/Core/Basepch.hpp)
+
+
+include(cmake/Sanitize.cmake)

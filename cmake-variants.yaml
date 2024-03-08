@@ -1,0 +1,13 @@
+buildType:
+ default: Debug
+ description:
+ choices:
+   Debug:
+     short: Debug
+     long: Emit debug information
+     buildType: Debug
+     settings:
+       SURE_EXCEPTIONS: ""
+       UBSAN: ON
+       ASAN: ON
+       TSAN: ""
