@@ -7,6 +7,8 @@
 #include "ShaderData.hpp"
 
 namespace multi_render_application {
+    class BufferLayout;
+
 
     class VertexBuffer {
     public:
@@ -17,8 +19,8 @@ namespace multi_render_application {
 
         virtual void SetData(const void* data, uint32_t size) = 0;
 
-//        virtual const buffer_layout& GetLayout() const = 0;
-//        virtual void SetLayout(const buffer_layout& layout) = 0;
+        virtual const BufferLayout& GetLayout() const = 0;
+        virtual void SetLayout(const BufferLayout& layout) = 0;
 
 //        static Ref<vertex_buffer> Create(uint32_t size);
 //        static Ref<vertex_buffer> Create(float* vertices, uint32_t size);
@@ -41,15 +43,15 @@ namespace multi_render_application {
     struct BufferElement
     {
         std::string Name;
-        shader_data_type Type;
+        ShaderDataType Type;
         uint32_t Size;
         size_t Offset;
         bool Normalized;
 
         BufferElement() = default;
 
-        BufferElement(shader_data_type type, std::string  name, bool normalized = false)
-                : Name(std::move(name)), Type(type), Size(shader_data_type_size(type)), Offset(0), Normalized(normalized)
+        BufferElement(ShaderDataType type, std::string  name, bool normalized = false)
+                : Name(std::move(name)), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
         {
         }
 
@@ -57,18 +59,18 @@ namespace multi_render_application {
         {
             switch (Type)
             {
-                case shader_data_type::Float:   return 1;
-                case shader_data_type::Float2:  return 2;
-                case shader_data_type::Float3:  return 3;
-                case shader_data_type::Float4:  return 4;
-                case shader_data_type::Mat3:    return 3; // 3* float3
-                case shader_data_type::Mat4:    return 4; // 4* float4
-                case shader_data_type::Int:     return 1;
-                case shader_data_type::Int2:    return 2;
-                case shader_data_type::Int3:    return 3;
-                case shader_data_type::Int4:    return 4;
-                case shader_data_type::Bool:    return 1;
-                case shader_data_type::None:
+                case ShaderDataType::Float:   return 1;
+                case ShaderDataType::Float2:  return 2;
+                case ShaderDataType::Float3:  return 3;
+                case ShaderDataType::Float4:  return 4;
+                case ShaderDataType::Mat3:    return 3; // 3* float3
+                case ShaderDataType::Mat4:    return 4; // 4* float4
+                case ShaderDataType::Int:     return 1;
+                case ShaderDataType::Int2:    return 2;
+                case ShaderDataType::Int3:    return 3;
+                case ShaderDataType::Int4:    return 4;
+                case ShaderDataType::Bool:    return 1;
+                case ShaderDataType::None:
                     break;
             }
 
@@ -87,7 +89,7 @@ namespace multi_render_application {
             CalculateOffsetsAndStride();
         }
 
-        [[nodiscard]] uint32_t GetStride() const { return m_Stride; }
+        [[nodiscard]] uint32_t GetStride() const { return m_stride; }
         [[nodiscard]] const std::vector<BufferElement>& GetElements() const { return m_elements; }
 
         std::vector<BufferElement>::iterator begin() { return m_elements.begin(); }
@@ -98,16 +100,16 @@ namespace multi_render_application {
         void CalculateOffsetsAndStride()
         {
             size_t offset = 0;
-            m_Stride = 0;
+            m_stride = 0;
             for (auto& element : m_elements)
             {
                 element.Offset = offset;
                 offset += element.Size;
-                m_Stride += element.Size;
+                m_stride += element.Size;
             }
         }
     private:
         std::vector<BufferElement> m_elements;
-        uint32_t m_Stride = 0;
+        uint32_t m_stride = 0;
     };
 }

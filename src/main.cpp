@@ -223,7 +223,9 @@
 
 #include <imgui/imgui.h>
 #include <glm/glm.hpp>
-int main(){
+#include <SPIRV-Cross/spirv_glsl.hpp>
 
-int* p = new int();
+int main(){
+//  std::vector<uint32_t> spirv_binary;
+//  spirv_cross::CompilerGLSL glsl(std::move(spirv_binary));
 }

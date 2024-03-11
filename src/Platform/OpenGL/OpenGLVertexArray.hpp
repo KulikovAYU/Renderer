@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <vector>
 #include "Renderer/VertexArray.hpp"
+#include "OpenGLEntityRenderObject.hpp"
 
 namespace multi_render_application {
 
@@ -16,13 +16,13 @@ namespace multi_render_application {
     public:
         OpenGLVertexArray();
 
-        void bind() const override;
+        void Bind() const override;
 
         void Unbind() const override;
 
-        void AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) override;
+        void AddVertexBuffer(const Ref<VertexBuffer> &vertex_buffer) override;
 
-        void SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) override;
+        void SetIndexBuffer(const Ref<IndexBuffer> &index_buffer) override;
 
         [[nodiscard]] const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const override;
 

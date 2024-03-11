@@ -16,7 +16,7 @@ namespace multi_render_application {
     public:
         explicit OpenGLShader(const std::string& filepath);
 
-        OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
+        OpenGLShader(const std::string& name, const std::string& vertex_src, const std::string& fragment_src);
 
         void Bind() const override{}
 
@@ -36,16 +36,19 @@ namespace multi_render_application {
 
         void SetMat4(const std::string &name, const glm::mat4 &value) override{}
 
-        [[nodiscard]] std::string GetName() const override{return m_name_;}
+        [[nodiscard]] std::string GetName() const override{return m_name;}
 
     private:
-        std::string m_file_path_;
-        std::string m_name_;
+        [[nodiscard]] std::string ReadFile(const std::string& filepath);
 
-        std::unordered_map<GLenum, std::vector<uint32_t>> m_vulkan_spirv_;
-        std::unordered_map<GLenum, std::vector<uint32_t>> m_open_glspirv_;
+    private:
+        std::string m_file_path;
+        std::string m_name;
 
-        std::unordered_map<GLenum, std::string> m_open_gl_source_code_;
+        std::unordered_map<GLenum, std::vector<uint32_t>> m_vulkan_spirv;
+        std::unordered_map<GLenum, std::vector<uint32_t>> m_open_glspirv;
+
+        std::unordered_map<GLenum, std::string> m_open_gl_source_code;
 
     };
 }

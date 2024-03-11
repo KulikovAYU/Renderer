@@ -10,3 +10,8 @@ SortIncludes: false
 PackConstructorInitializers: Never
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: AfterComma
+IndentWidth: 4
+TabWidth: 4
+AccessModifierOffset: 0
+IndentAccessModifiers: true
+"NamespaceIndentation": "All"

@@ -14,15 +14,19 @@ namespace multi_render_application {
             public VertexBuffer{
 
     public:
-        OpenGLVertexBuffer(uint32_t size);
+        explicit OpenGLVertexBuffer(uint32_t size);
 
         OpenGLVertexBuffer(float* vertices, uint32_t size);
 
         void Bind() const override;
-
         void Unbind() const override;
 
         void SetData(const void* data, uint32_t size) override;
+
+        const BufferLayout& GetLayout() const override {return m_layout;}
+
+    private:
+        BufferLayout m_layout;
     };
 
     class OpenglIndexBuffer :
@@ -33,7 +37,6 @@ namespace multi_render_application {
         OpenglIndexBuffer(uint32_t* indices, uint32_t count);
 
         void Bind() const override;
-
         void Unbind() const override;
 
         [[nodiscard]] uint32_t GetCount() const override;

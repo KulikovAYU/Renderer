@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.14)
 
 set(OPENGL_PLATFORM_INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLBuffers.hpp
@@ -14,6 +14,7 @@ set(OPENGL_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLTypeMapping.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLRenderApi.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLShader.cpp
+        OpenGLVertexArray.cpp
 )
 
 add_library(OpenGlPlatformLibrary STATIC
@@ -21,11 +22,9 @@ add_library(OpenGlPlatformLibrary STATIC
         ${OPENGL_PLATFORM_SOURCES})
 
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
-message("Creating GLAD library")
 set(GLAD_DIR ${THIRDPARTY_DIR}/glad)
 add_library(Glad ${GLAD_DIR}/src/glad.c)
 
-message("Creating GLFW library")
 add_subdirectory(${THIRDPARTY_DIR}/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 target_include_directories(OpenGlPlatformLibrary PUBLIC ${THIRDPARTY_DIR}/glfw/include)
 

@@ -11,7 +11,7 @@ namespace multi_render_application {
     public:
         virtual ~VertexArray() = default;
 
-        virtual void bind() const = 0;
+        virtual void Bind() const = 0;
 
         virtual void Unbind() const = 0;
 

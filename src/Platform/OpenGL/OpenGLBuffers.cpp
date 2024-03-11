@@ -3,7 +3,7 @@
 //
 
 #include "OpenGLBuffers.hpp"
-#include "OpenGLVertexArray.hpp"
+
 
 namespace multi_render_application{
 
@@ -51,42 +51,5 @@ namespace multi_render_application{
 
     uint32_t OpenglIndexBuffer::GetCount() const {
         return m_count;
-    }
-
-    OpenGLVertexArray::OpenGLVertexArray() {
-        glCreateVertexArrays(1, &m_renderId);
-    }
-
-    void OpenGLVertexArray::bind() const{
-        glBindVertexArray(m_renderId);
-    }
-
-    void OpenGLVertexArray::Unbind() const{
-        glBindVertexArray(0);
-    }
-
-    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
-        glBindVertexArray(m_renderId);
-        vertexBuffer->Bind();
-
-        //TODO: parse shaider layout
-
-        m_vertex_buffers.push_back(vertexBuffer);
-    }
-
-    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
-
-        glBindVertexArray(m_renderId);
-        indexBuffer->Bind();
-
-        m_index_buffer = indexBuffer;
-    }
-
-    const std::vector<Ref<VertexBuffer>> &OpenGLVertexArray::GetVertexBuffers() const {
-        return m_vertex_buffers;
-    }
-
-    const Ref<IndexBuffer> &OpenGLVertexArray::GetIndexBuffer() const {
-        return m_index_buffer;
     }
 }
