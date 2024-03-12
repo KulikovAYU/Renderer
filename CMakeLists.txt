@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/core)
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 
-set(GLM_DIR ${THIRDPARTY_DIR}/glm)
-add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
+#set(GLM_DIR ${THIRDPARTY_DIR}/glm)
+#add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
 
 set(SPIRVCROSS_DIR ${THIRDPARTY_DIR}/SPIRV-Cross)
 add_subdirectory(${SPIRVCROSS_DIR} ${CMAKE_BINARY_DIR}/SPIRV-Cross)
@@ -40,10 +40,13 @@ target_link_libraries(ImGui PRIVATE Glad glfw)
 
 add_subdirectory(src/Platform/Opengl)
 target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
-target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
+#target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
 
 set(HEADERS_DIR
         src/Core/Sample/core.hpp
+        src/Core/PlatformDetection.hpp
+        src/Logging/Log.hpp
+        src/Core/Assert.hpp
         #src/Core/Buffers.hpp
         #src/Core/renderer/Buffer.hpp
         #src/Core/renderer/VertexArray.hpp
@@ -60,7 +63,6 @@ set(SOURCES_DIR
         src/Platform/PlatformProvider/PlatformShader.cpp
         src/Platform/PlatformProvider/PlatformRendererApi.cpp
         src/Logging/Log.cpp
-        src/Logging/Log.h
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS_DIR} ${SOURCES_DIR})
@@ -91,7 +93,7 @@ target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
         ${GLAD_INCLUDE_DIR}
-        ${GLM_DIR}
+        #${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src
         #${CORE_DIR}
 )

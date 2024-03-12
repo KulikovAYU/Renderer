@@ -57,15 +57,15 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 }
 
 // Core log macros
-#define LOG_CORE_TRACE(...)    ::multi_render_application::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define LOG_CORE_INFO(...)     ::multi_render_application::Log::GetCoreLogger()->info(__VA_ARGS__)
-#define LOG_CORE_WARN(...)     ::multi_render_application::Log::GetCoreLogger()->warn(__VA_ARGS__)
-#define LOG_CORE_ERROR(...)    ::multi_render_application::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define LOG_CORE_CRITICAL(...) ::multi_render_application::Log::GetCoreLogger()->critical(__VA_ARGS__)
+#define MR_LOG_CORE_TRACE(...)    ::multi_render_application::Log::GetCoreLogger()->trace(__VA_ARGS__)
+#define MR_LOG_CORE_INFO(...)     ::multi_render_application::Log::GetCoreLogger()->info(__VA_ARGS__)
+#define MR_LOG_CORE_WARN(...)     ::multi_render_application::Log::GetCoreLogger()->warn(__VA_ARGS__)
+#define MR_LOG_CORE_ERROR(...)    ::multi_render_application::Log::GetCoreLogger()->error(__VA_ARGS__)
+#define MR_LOG_CORE_CRITICAL(...) ::multi_render_application::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
-#define LOG_TRACE(...)         ::multi_render_application::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define LOG_INFO(...)          ::multi_render_application::Log::GetClientLogger()->info(__VA_ARGS__)
-#define LOG_WARN(...)          ::multi_render_application::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define LOG_ERROR(...)         ::multi_render_application::Log::GetClientLogger()->error(__VA_ARGS__)
-#define LOG_CRITICAL(...)      ::multi_render_application::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define MR_LOG_TRACE(...)         ::multi_render_application::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define MR_LOG_INFO(...)          ::multi_render_application::Log::GetClientLogger()->info(__VA_ARGS__)
+#define MR_LOG_WARN(...)          ::multi_render_application::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define MR_LOG_ERROR(...)         ::multi_render_application::Log::GetClientLogger()->error(__VA_ARGS__)
+#define MR_LOG_CRITICAL(...)      ::multi_render_application::Log::GetClientLogger()->critical(__VA_ARGS__)

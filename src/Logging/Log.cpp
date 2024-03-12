@@ -4,7 +4,7 @@
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
-#include "Log.h"
+#include "Log.hpp"
 
 namespace multi_render_application {
     Ref<spdlog::logger> Log::s_core_logger;

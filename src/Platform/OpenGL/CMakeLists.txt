@@ -21,6 +21,9 @@ add_library(OpenGlPlatformLibrary STATIC
         ${OPENGL_PLATFORM_INCLUDES}
         ${OPENGL_PLATFORM_SOURCES})
 
+set(GLM_DIR ${THIRDPARTY_DIR}/glm)
+add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
+
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 set(GLAD_DIR ${THIRDPARTY_DIR}/glad)
 add_library(Glad ${GLAD_DIR}/src/glad.c)
@@ -31,7 +34,7 @@ target_include_directories(OpenGlPlatformLibrary PUBLIC ${THIRDPARTY_DIR}/glfw/i
 target_include_directories(Glad PRIVATE ${GLAD_DIR}/include)
 target_include_directories(OpenGlPlatformLibrary PUBLIC ${GLAD_DIR}/include)
 target_include_directories(OpenGlPlatformLibrary PUBLIC ${CMAKE_SOURCE_DIR}/src/core)
-
+target_include_directories(OpenGlPlatformLibrary PUBLIC ${GLM_DIR})
 target_link_libraries(OpenGlPlatformLibrary PRIVATE Glad)
 
 #включаем неявно base.hpp во все translation units

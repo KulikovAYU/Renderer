@@ -4,6 +4,27 @@
 
 #pragma once
 #include <memory>
+#include <PlatformDetection.hpp>
+
+#ifdef DEBUG
+#if defined(MR_PLATFORM_WINDOWS)
+		    #define MR_DEBUGBREAK() __debugbreak()
+	    #elif defined(MR_PLATFORM_LINUX)
+		    #include <signal.h>
+		    #define MR_DEBUGBREAK() raise(SIGTRAP)
+        #elif defined(MR_PLATFORM_MACOS)
+            #include <signal.h>
+		    #define MR_DEBUGBREAK() raise(SIGTRAP)
+	    #else
+		    #error "Platform doesn't support debugbreak yet!"
+	    #endif
+	    #define MR_ENABLE_ASSERTS
+#else
+#define MR_DEBUGBREAK()
+#endif
+
+#define MR_EXPAND_MACRO(x) x
+#define MR_STRINGIFY_MACRO(x) #x
 
 namespace multi_render_application {
 
