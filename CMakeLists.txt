@@ -42,27 +42,17 @@ set_target_properties(ImGui PROPERTIES
 )
 target_link_libraries(ImGui PRIVATE Glad glfw)
 
-## После сборки копируем библиотеку в желаемую папку
-#add_custom_command(TARGET ImGui POST_BUILD
-#        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#        $<TARGET_FILE_DIR:ImGui>/ImGui.lib
-#        ${CMAKE_BINARY_DIR}/libs/imgui/ImGui.lib
-#        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --cyan "Copying ImGui.lib completed, now removing original..."
-#        COMMAND ${CMAKE_COMMAND} -E remove
-#        $<TARGET_FILE_DIR:ImGui>/ImGui.lib
-#)
-
-
 add_subdirectory(src/Platform/OpenGL ${CMAKE_BINARY_DIR}/libs/Opengl)
-target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
-target_include_directories(OpenGlPlatformLibrary PRIVATE  ${SPDLOG_DIR}/include ${CORE_DIR})
-#target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
+target_include_directories(OpenGlPlatformLibrary PRIVATE
+        ${GLAD_INCLUDE_DIR}
+        ${SPDLOG_DIR}/include
+        ${CORE_DIR})
 
 set(HEADERS_DIR
-        src/Core/Sample/core.hpp
-        src/Core/PlatformDetection.hpp
-        src/Core/Logging/Log.hpp
-        src/Core/Assert.hpp
+        #src/Core/Sample/core.hpp
+        #src/Core/PlatformDetection.hpp
+        #src/Core/Logging/Log.hpp
+        #src/Core/Assert.hpp
         #src/Core/Buffers.hpp
         #src/Core/renderer/Buffer.hpp
         #src/Core/renderer/VertexArray.hpp
@@ -83,21 +73,10 @@ set(SOURCES_DIR
 
 add_executable(${PROJECT_NAME} ${HEADERS_DIR} ${SOURCES_DIR})
 
-#target_include_directories(MyOpenGLExecutable PRIVATE ${CORE_DIR})
-
-#find_package(OpenGL REQUIRED)
-#if(OPENGL_FOUND)
-#    include_directories(${OPENGL_INCLUDE_DIRS})
-#    target_link_libraries(MyOpenGLExecutable PRIVATE ${OPENGL_LIBRARIES})
-#endif()
-
 if(APPLE)
     find_library(COCOA_LIBRARY Cocoa)
     find_library(IOKIT_LIBRARY IOKit)
 endif()
-
-
-
 
 if(COCOA_LIBRARY)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${COCOA_LIBRARY})
@@ -106,10 +85,6 @@ endif()
 if(IOKIT_LIBRARY)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${IOKIT_LIBRARY})
 endif()
-
-
-
-
 
 target_include_directories(
         ${PROJECT_NAME}
@@ -131,12 +106,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         OpenGlPlatformLibrary
 )
 
-#TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PRIVATE
-#        pthread
-#)
-
 #target_compile_options(${PROJECT_NAME} PRIVATE -include ${CORE_DIR}/Basepch.hpp)
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Basepch.hpp)
-
 
 include(cmake/Sanitize.cmake)
