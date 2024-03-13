@@ -56,15 +56,15 @@ namespace multi_render_application{
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void OpenGLRenderApi::DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount) {
-        vertexArray->Bind();
-        uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+    void OpenGLRenderApi::DrawIndexed(const Ref<VertexArray> &vertex_array, uint32_t index_count) {
+        vertex_array->Bind();
+        uint32_t count = index_count != 0u ? index_count : vertex_array->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
 
-    void OpenGLRenderApi::DrawLines(const Ref<VertexArray> &vertexArray, uint32_t vertexCount) {
-        vertexArray->Bind();
-        glDrawArrays(GL_LINES, 0, vertexCount);
+    void OpenGLRenderApi::DrawLines(const Ref<VertexArray> &vertex_array, uint32_t vertex_count) {
+        vertex_array->Bind();
+        glDrawArrays(GL_LINES, 0, vertex_count);
     }
 
     void OpenGLRenderApi::SetLineWidth(float width) {

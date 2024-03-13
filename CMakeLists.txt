@@ -11,10 +11,10 @@ set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 #add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
 
 set(SPIRVCROSS_DIR ${THIRDPARTY_DIR}/SPIRV-Cross)
-add_subdirectory(${SPIRVCROSS_DIR} ${CMAKE_BINARY_DIR}/SPIRV-Cross)
+add_subdirectory(${SPIRVCROSS_DIR} ${CMAKE_BINARY_DIR}/libs/SPIRV-Cross)
 
 set(SPDLOG_DIR ${THIRDPARTY_DIR}/spdlog)
-add_subdirectory(${SPDLOG_DIR} ${CMAKE_BINARY_DIR}/spdlog)
+#add_subdirectory(${SPDLOG_DIR} ${CMAKE_BINARY_DIR}/libs/spdlog)
 
 set(IMGUI_DIR  ${THIRDPARTY_DIR}/imgui)
 set(IMGUI_INCLUDES
@@ -36,16 +36,32 @@ add_library(ImGui STATIC
         ${IMGUI_SOURCES})
 target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR})
 target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR}/imgui)
+# Устанавливаем каталог для архивных файлов (библиотек)
+set_target_properties(ImGui PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs/imgui
+)
 target_link_libraries(ImGui PRIVATE Glad glfw)
 
-add_subdirectory(src/Platform/Opengl)
+## После сборки копируем библиотеку в желаемую папку
+#add_custom_command(TARGET ImGui POST_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#        $<TARGET_FILE_DIR:ImGui>/ImGui.lib
+#        ${CMAKE_BINARY_DIR}/libs/imgui/ImGui.lib
+#        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --cyan "Copying ImGui.lib completed, now removing original..."
+#        COMMAND ${CMAKE_COMMAND} -E remove
+#        $<TARGET_FILE_DIR:ImGui>/ImGui.lib
+#)
+
+
+add_subdirectory(src/Platform/Opengl ${CMAKE_BINARY_DIR}/libs/Opengl)
 target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
+target_include_directories(OpenGlPlatformLibrary PRIVATE  ${SPDLOG_DIR}/include)
 #target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
 
 set(HEADERS_DIR
         src/Core/Sample/core.hpp
         src/Core/PlatformDetection.hpp
-        src/Logging/Log.hpp
+        src/Core/Logging/Log.hpp
         src/Core/Assert.hpp
         #src/Core/Buffers.hpp
         #src/Core/renderer/Buffer.hpp
@@ -62,7 +78,7 @@ set(SOURCES_DIR
         src/Core/Sample/sample_shader.cpp
         src/Platform/PlatformProvider/PlatformShader.cpp
         src/Platform/PlatformProvider/PlatformRendererApi.cpp
-        src/Logging/Log.cpp
+        src/Core/Logging/Log.cpp
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS_DIR} ${SOURCES_DIR})
@@ -96,19 +112,25 @@ target_include_directories(
         #${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src
         #${CORE_DIR}
+        ${SPDLOG_DIR}/include
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         spirv-cross-core
         spirv-cross-glsl
-        spdlog
+        #spdlog
         ImGui
         Glad
         glfw
         OpenGlPlatformLibrary
 )
 
+#TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PRIVATE
+#        pthread
+#)
+
 #target_compile_options(${PROJECT_NAME} PRIVATE -include ${CORE_DIR}/Basepch.hpp)
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Basepch.hpp)
+
 
 include(cmake/Sanitize.cmake)

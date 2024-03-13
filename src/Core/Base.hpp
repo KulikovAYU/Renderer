@@ -53,3 +53,6 @@ namespace multi_render_application {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
 }
+
+#include "Logging/Log.hpp"
+#include "Assert.hpp"

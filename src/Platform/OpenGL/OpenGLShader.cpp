@@ -6,6 +6,7 @@
 #include <filesystem>
 #include "OpenGLShader.hpp"
 
+
 namespace multi_render_application {
 
     namespace utils {
@@ -15,10 +16,11 @@ namespace multi_render_application {
             return "assets/cache/shader/opengl";
         }
 
-        static void CreateChasheDirectoryIfNotExist() {
-            std::string cacheDirectory = GetCacheDirectory();
-            if (!std::filesystem::exists(cacheDirectory))
-                std::filesystem::create_directories(cacheDirectory);
+        static void CreateChashDirectoryIfNotExist() {
+            std::string cache_directory = GetCacheDirectory();
+            if (!std::filesystem::exists(cache_directory)) {
+                std::filesystem::create_directories(cache_directory);
+            }
         }
 
     }  // namespace utils
@@ -26,14 +28,14 @@ namespace multi_render_application {
     OpenGLShader::OpenGLShader(const std::string& filepath)
         : m_file_path{filepath} {
         // TODO: do smth !
-        utils::CreateChasheDirectoryIfNotExist();
+        utils::CreateChashDirectoryIfNotExist();
 
         std::string source = ReadFile(filepath);
     }
 
     OpenGLShader::OpenGLShader(const std::string& name,
-                               const std::string& vertexSrc,
-                               const std::string& fragmentSrc)
+                               const std::string& vertex_src,
+                               const std::string& fragment_src)
         : m_name{name} {
         // TODO: do smth !!!
     }
@@ -52,10 +54,10 @@ namespace multi_render_application {
                 in.seekg(0, std::ios::beg);
                 in.read(&result[0], size);
             } else {
-                // HZ_CORE_ERROR("Could not read from file '{0}'", filepath);
+               MR_LOG_CORE_ERROR("Could not read from file '{0}'", filepath);
             }
         } else {
-            // HZ_CORE_ERROR("Could not open file '{0}'", filepath);
+           // MR_LOG_CORE_ERROR("Could not open file '{0}'", filepath);
         }
 
         return result;

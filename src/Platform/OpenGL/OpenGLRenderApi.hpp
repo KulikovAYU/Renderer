@@ -16,8 +16,8 @@ namespace multi_render_application {
         void SetClearColor(const glm::vec4& color) override;
         void Clear() override;
 
-        void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
-        void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) override;
+        void DrawIndexed(const Ref<VertexArray>& vertex_array, uint32_t index_count = 0) override;
+        void DrawLines(const Ref<VertexArray>& vertex_array, uint32_t vertex_count) override;
 
         virtual void SetLineWidth(float width) override;
     };

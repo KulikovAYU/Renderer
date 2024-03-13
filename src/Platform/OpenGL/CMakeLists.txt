@@ -22,7 +22,7 @@ add_library(OpenGlPlatformLibrary STATIC
         ${OPENGL_PLATFORM_SOURCES})
 
 set(GLM_DIR ${THIRDPARTY_DIR}/glm)
-add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
+#add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/libs/glm)
 
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 set(GLAD_DIR ${THIRDPARTY_DIR}/glad)

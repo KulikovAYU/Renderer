@@ -226,6 +226,11 @@
 #include <SPIRV-Cross/spirv_glsl.hpp>
 
 int main(){
+    multi_render_application::Log::Init();
+    MR_LOG_CORE_INFO("Could not read from file ");
+    int n =1;
+    int k = 1;
+    return 1;
 //  std::vector<uint32_t> spirv_binary;
 //  spirv_cross::CompilerGLSL glsl(std::move(spirv_binary));
 }

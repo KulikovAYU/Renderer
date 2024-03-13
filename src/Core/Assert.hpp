@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <Logging/Log.hpp>
+#include "Logging/Log.hpp"
 #include <filesystem>
 
 #ifdef ENABLE_ASSERTS

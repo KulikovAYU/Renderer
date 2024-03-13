@@ -5,7 +5,7 @@
 #pragma once
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
+#include "glm/gtx/string_cast.hpp"
 
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -14,8 +14,8 @@
 #pragma warning(push, 0)
 #endif
 
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 
 #if defined(__clang__)
 #pragma clang diagnostic pop
