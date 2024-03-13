@@ -4,7 +4,7 @@
 
 #pragma once
 #include <memory>
-#include <PlatformDetection.hpp>
+#include "PlatformDetection.hpp"
 
 #ifdef DEBUG
 #if defined(MR_PLATFORM_WINDOWS)

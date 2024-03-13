@@ -29,7 +29,7 @@
 	    #error "Android is not supported!"
     #elif defined(__linux__)
         #define MR_PLATFORM_LINUX
-	    #error "Linux is not supported!"//TODO:make to support
+	    //#error "Linux is not supported!"//TODO:make to support
     #else
         /* Unknown compiler/platform */
 	    #error "Unknown platform!"

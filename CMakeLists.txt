@@ -4,7 +4,7 @@ project(Renderer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/core)
+set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/Core)
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 
 #set(GLM_DIR ${THIRDPARTY_DIR}/glm)
@@ -53,9 +53,9 @@ target_link_libraries(ImGui PRIVATE Glad glfw)
 #)
 
 
-add_subdirectory(src/Platform/Opengl ${CMAKE_BINARY_DIR}/libs/Opengl)
+add_subdirectory(src/Platform/OpenGL ${CMAKE_BINARY_DIR}/libs/Opengl)
 target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
-target_include_directories(OpenGlPlatformLibrary PRIVATE  ${SPDLOG_DIR}/include)
+target_include_directories(OpenGlPlatformLibrary PRIVATE  ${SPDLOG_DIR}/include ${CORE_DIR})
 #target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
 
 set(HEADERS_DIR
@@ -68,7 +68,7 @@ set(HEADERS_DIR
         #src/Core/renderer/VertexArray.hpp
         #src/Core/renderer/Shader.hpp
         #src/Core/renderer/ShaderData.hpp
-        #src/Core/renderer/RendererApi.hpp
+        #src/Core/Renderer/RendererApi.hpp
         #src/Core/Log.cpp
         #src/Core/Log.h
 )
@@ -96,6 +96,9 @@ if(APPLE)
     find_library(IOKIT_LIBRARY IOKit)
 endif()
 
+
+
+
 if(COCOA_LIBRARY)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${COCOA_LIBRARY})
 endif()
@@ -105,13 +108,16 @@ if(IOKIT_LIBRARY)
 endif()
 
 
+
+
+
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
         ${GLAD_INCLUDE_DIR}
         #${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src
-        #${CORE_DIR}
+        ${CORE_DIR}
         ${SPDLOG_DIR}/include
 )
 
