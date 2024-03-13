@@ -11,3 +11,10 @@ Submodules are located in thirdparty dir. To update submodules insert command
 ```c++
 git submodule update --init
 ```
+
+#### Install dependencies for UNIX
+To work open gl print command
+```
+sudo apt install mesa-common-dev
+```
+
