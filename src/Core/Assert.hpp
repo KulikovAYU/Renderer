@@ -4,11 +4,13 @@
 
 #pragma once
 
-#include "Logging/Log.hpp"
 #include <filesystem>
+#include <Base.hpp>
+
+#define ENABLE_ASSERTS
 
 #ifdef ENABLE_ASSERTS
-    #define MR_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { MR##type##ERROR(msg, __VA_ARGS__); MR_DEBUGBREAK(); } }
+    #define MR_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { MR_LOG##type##ERROR(msg, __VA_ARGS__); MR_DEBUGBREAK(); } }
 	#define MR_INTERNAL_ASSERT_WITH_MSG(type, check, ...) MR_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)
 	#define MR_INTERNAL_ASSERT_NO_MSG(type, check) MR_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", MR_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
 

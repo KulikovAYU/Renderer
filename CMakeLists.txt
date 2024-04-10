@@ -4,17 +4,18 @@ project(Renderer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/Core)
+set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/core)
 set(THIRDPARTY_DIR ${CMAKE_SOURCE_DIR}/thirdparty)
 
 #set(GLM_DIR ${THIRDPARTY_DIR}/glm)
 #add_subdirectory(${GLM_DIR} ${CMAKE_BINARY_DIR}/glm)
 
-set(SPIRVCROSS_DIR ${THIRDPARTY_DIR}/SPIRV-Cross)
-add_subdirectory(${SPIRVCROSS_DIR} ${CMAKE_BINARY_DIR}/libs/SPIRV-Cross)
+#set(SPIRVCROSS_DIR ${THIRDPARTY_DIR}/SPIRV-Cross)
+#add_subdirectory(${SPIRVCROSS_DIR} ${CMAKE_BINARY_DIR}/SPIRV-Cross)
+
 
 set(SPDLOG_DIR ${THIRDPARTY_DIR}/spdlog)
-#add_subdirectory(${SPDLOG_DIR} ${CMAKE_BINARY_DIR}/libs/spdlog)
+add_subdirectory(${SPDLOG_DIR} ${CMAKE_BINARY_DIR}/spdlog)
 
 set(IMGUI_DIR  ${THIRDPARTY_DIR}/imgui)
 set(IMGUI_INCLUDES
@@ -36,29 +37,24 @@ add_library(ImGui STATIC
         ${IMGUI_SOURCES})
 target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR})
 target_include_directories(ImGui PUBLIC ${THIRDPARTY_DIR}/imgui)
-# Устанавливаем каталог для архивных файлов (библиотек)
-set_target_properties(ImGui PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs/imgui
-)
 target_link_libraries(ImGui PRIVATE Glad glfw)
 
-add_subdirectory(src/Platform/OpenGL ${CMAKE_BINARY_DIR}/libs/Opengl)
-target_include_directories(OpenGlPlatformLibrary PRIVATE
-        ${GLAD_INCLUDE_DIR}
-        ${SPDLOG_DIR}/include
-        ${CORE_DIR})
+add_subdirectory(src/Platform/Opengl)
+target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLAD_INCLUDE_DIR})
+#target_include_directories(OpenGlPlatformLibrary PRIVATE ${GLM_DIR})
 
 set(HEADERS_DIR
-        #src/Core/Sample/core.hpp
-        #src/Core/PlatformDetection.hpp
-        #src/Core/Logging/Log.hpp
-        #src/Core/Assert.hpp
+        src/Core/Sample/core.hpp
+        src/Core/PlatformDetection.hpp
+        src/Logging/Log.hpp
+        src/Core/Assert.hpp
+        src/Core/Timer.h
         #src/Core/Buffers.hpp
         #src/Core/renderer/Buffer.hpp
         #src/Core/renderer/VertexArray.hpp
         #src/Core/renderer/Shader.hpp
         #src/Core/renderer/ShaderData.hpp
-        #src/Core/Renderer/RendererApi.hpp
+        #src/Core/renderer/RendererApi.hpp
         #src/Core/Log.cpp
         #src/Core/Log.h
 )
@@ -68,10 +64,18 @@ set(SOURCES_DIR
         src/Core/Sample/sample_shader.cpp
         src/Platform/PlatformProvider/PlatformShader.cpp
         src/Platform/PlatformProvider/PlatformRendererApi.cpp
-        src/Core/Logging/Log.cpp
+        src/Logging/Log.cpp
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS_DIR} ${SOURCES_DIR})
+
+#target_include_directories(MyOpenGLExecutable PRIVATE ${CORE_DIR})
+
+#find_package(OpenGL REQUIRED)
+#if(OPENGL_FOUND)
+#    include_directories(${OPENGL_INCLUDE_DIRS})
+#    target_link_libraries(MyOpenGLExecutable PRIVATE ${OPENGL_LIBRARIES})
+#endif()
 
 if(APPLE)
     find_library(COCOA_LIBRARY Cocoa)
@@ -86,19 +90,27 @@ if(IOKIT_LIBRARY)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${IOKIT_LIBRARY})
 endif()
 
+
+
+
+
+
+
+
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
         ${GLAD_INCLUDE_DIR}
         #${GLM_DIR}
         ${PROJECT_SOURCE_DIR}/src
-        ${CORE_DIR}
+        #${CORE_DIR}
         ${SPDLOG_DIR}/include
 )
 
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        spirv-cross-core
-        spirv-cross-glsl
+        # spirv-cross-core
+        # spirv-cross-glsl
         #spdlog
         ImGui
         Glad
@@ -106,7 +118,37 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         OpenGlPlatformLibrary
 )
 
+
+
+
 #target_compile_options(${PROJECT_NAME} PRIVATE -include ${CORE_DIR}/Basepch.hpp)
-target_precompile_headers(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Basepch.hpp)
+target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/Basepch.hpp)
+
+#find_package(Vulkan REQUIRED)
+#if (Vulkan_FOUND)
+#    message("Vulkan SDK found: ${Vulkan_INCLUDE_DIRS}")
+#    target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
+#
+#    get_filename_component(VULKAN_SDK_LIBS ${Vulkan_LIBRARIES} DIRECTORY)
+#    message("Vulkan libraries found: ${VULKAN_SDK_LIBS}")
+#    target_link_libraries(${PROJECT_NAME} PRIVATE
+#            #optimized ${VULKAN_SDK_LIBS}/shaderc_sharedd.lib
+#            optimized ${VULKAN_SDK_LIBS}/shaderc_sharedd.lib
+#            optimized ${VULKAN_SDK_LIBS}/spirv-cross-cored.lib
+#            optimized ${VULKAN_SDK_LIBS}/spirv-cross-glsld.lib
+#            optimized ${VULKAN_SDK_LIBS}/SPIRV-Toolsd.lib
+#    )
+#
+#    #    find_library(SHADERC_SHARED_LIBRARY shaderc_shared HINTS ${VULKAN_SDK_LIBS})
+#    #    find_library(SPIRV_CROSS_CORE_LIBRARY spirv-cross-core HINTS ${VULKAN_SDK_LIBS})
+#    #    find_library(SPIRV_CROSS_GLSL_LIBRARY spirv-cross-glsl HINTS ${VULKAN_SDK_LIBS})
+#    #    target_link_libraries(OpenGlPlatformLibrary PRIVATE
+#    #            ${SHADERC_SHARED_LIBRARY}
+#    #            ${SPIRV_CROSS_CORE_LIBRARY}
+#    #            ${SPIRV_CROSS_GLSL_LIBRARY}
+#    #    )
+#else ()
+#    message(FATAL_ERROR "Vulkan SDK not found.")
+#endif ()
 
 include(cmake/Sanitize.cmake)

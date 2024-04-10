@@ -4,7 +4,7 @@
 
 #pragma once
 #include <memory>
-#include "PlatformDetection.hpp"
+#include <PlatformDetection.hpp>
 
 #ifdef DEBUG
 #if defined(MR_PLATFORM_WINDOWS)
@@ -54,5 +54,5 @@ namespace multi_render_application {
     }
 }
 
-#include "Logging/Log.hpp"
+#include "../Logging/Log.hpp"
 #include "Assert.hpp"

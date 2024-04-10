@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
+
 namespace multi_render_application {
     class OpenGLShader final:
             public Shader,
@@ -18,9 +19,9 @@ namespace multi_render_application {
 
         OpenGLShader(const std::string& name, const std::string& vertex_src, const std::string& fragment_src);
 
-        void Bind() const override{}
+        void Bind() const override;
 
-        void Unbind() const override{}
+        void Unbind() const override;
 
         void SetInt(const std::string &name, int value) override{}
 
@@ -40,6 +41,12 @@ namespace multi_render_application {
 
     private:
         [[nodiscard]] std::string ReadFile(const std::string& filepath);
+        [[nodiscard]] std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+
+        void CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shader_sources);
+        void CompileOrGetOpenGLBinaries();
+        void CreateProgram();
+        void Reflect(GLenum stage, const std::vector<uint32_t>& shader_data);
 
     private:
         std::string m_file_path;

@@ -19,6 +19,5 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Base.hpp"
-
-//#include <glm/glm.hpp>
+#include "Core/Base.hpp"
+#include "Logging/Log.hpp"
