@@ -226,6 +226,7 @@
 #include <SPIRV-Cross/spirv_glsl.hpp>
 
 int main(){
-//  std::vector<uint32_t> spirv_binary;
-//  spirv_cross::CompilerGLSL glsl(std::move(spirv_binary));
+  int n = 1;
+  std::vector<uint32_t> spirv_binary;
+  spirv_cross::CompilerGLSL glsl(std::move(spirv_binary));
 }
